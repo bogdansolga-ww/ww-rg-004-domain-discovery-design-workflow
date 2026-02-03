@@ -34,6 +34,7 @@ Developers spend 1-2 days discovering domain logic when adding new AI agent capa
 | `docs/01-domain-discovery-tooling.md` | Claude Code `/discover-domain` command design |
 | `docs/02-architecture-recommendation.md` | Analysis of "business logic in mobile" with 3 paths forward |
 | `docs/03-rag-feasibility-analysis.md` | Technical assessment of RAG vs alternatives |
+| `docs/04-system-overview.md` | End-to-end architecture with Mermaid diagrams |
 
 ### Key Recommendations
 
@@ -86,7 +87,8 @@ ww-rg-004-domain-discovery-design/
 ├── docs/
 │   ├── 01-domain-discovery-tooling.md
 │   ├── 02-architecture-recommendation.md
-│   └── 03-rag-feasibility-analysis.md
+│   ├── 03-rag-feasibility-analysis.md
+│   └── 04-system-overview.md
 ├── reference/                # Source documents
 │   ├── 04-domain-logic-discovery-flow.md
 │   ├── rg-mobile-guardrails-domain-logic.md
