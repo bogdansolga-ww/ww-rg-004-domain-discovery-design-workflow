@@ -5,24 +5,30 @@
 - **Purpose:** Provide technicians with their daily work schedule, job details, and navigation context
 - **Key concepts:** Route, Stop (job), Sequence, Customer, Services, Job indicators (ASAP, Call Ahead, etc.)
 
+> **See also:** [Glossary](../glossary.md) for cross-domain terminology (Job vs Service, Customer, ServiceState, Job Indicators, etc.)
+
 ## Business Rules
 
-| Rule ID | Rule | Source | Validated |
-|---------|------|--------|-----------|
-| BR-001 | Jobs ordered by Sequence number (not array index) | StopObjWithDetails.cs:28, AI prompt rules | [?] |
-| BR-002 | Cust_No = 0 indicates Depot (not a customer stop) | StopObjWithDetails.cs:102-103 | [?] |
-| BR-003 | Job is "Done" if at least one service completed | StopObjWithDetails.cs:47-48 | [?] |
-| BR-004 | HasPromisedTime requires highlighting PromisedTimeString | StopObjWithDetails.cs:39, AI prompt | [?] |
-| BR-005 | IsCallAhead requires "Call Ahead Required" warning | StopObjWithDetails.cs:36, AI prompt | [?] |
-| BR-006 | Job marked IsPosted when all services completed AND auto-posted | ServiceTimersManager influence | [?] |
-| BR-007 | Route listing filtered by employeeId, schedDate, optional route, optional crewId | RouteProxy.cs:27-46 | [?] |
-| BR-008 | Weather data attached to each job in enriched listing | ToolDispatcherService.cs:543-548 | [?] |
-| BR-009 | Customer history insights (CustomerSince, LastTreatmentDate) enriched per job | ToolDispatcherService.cs:557-582 | [?] |
-| BR-010 | Service IDs list links job to individual services | StopObjWithDetails.cs:53-55 | [?] |
-| BR-011 | Job indicators enum defines all flag types (ASAP, PromisedTime, CallAhead, etc.) | StopObjWithDetails.cs:160-171 | [?] |
-| BR-012 | OnCreditHold flag indicates customer billing issue | StopObjWithDetails.cs:69 | [?] |
+> **Source repo:** `Real-Green-Mobile` (branch: `MOB-12830-AI-assistant-NEW`)
+
+| Rule ID | Business Rule | Code Implementation | Source | Validated |
+|---------|---------------|---------------------|--------|-----------|
+| BR-001 | Jobs must be displayed in route sequence order, not by their position in the data array | Sequence field used for ordering | StopObjWithDetails.cs:28, AI prompt rules | [?] |
+| BR-002 | A stop with customer number zero represents the depot/starting point, not a service location | Cust_No = 0 check for IsDepot property | StopObjWithDetails.cs:102-103 | [?] |
+| BR-003 | A job is considered "Done" when at least one of its services has been completed | Done flag set based on service completion | StopObjWithDetails.cs:47-48 | [?] |
+| BR-004 | Jobs with a promised time must prominently display the promised time string to the technician | HasPromisedTime triggers PromisedTimeString display | StopObjWithDetails.cs:39, AI prompt | [?] |
+| BR-005 | Jobs requiring a call ahead must display a warning so technician calls before arriving | IsCallAhead triggers "Call Ahead Required" warning | StopObjWithDetails.cs:36, AI prompt | [?] |
+| BR-006 | A job is marked as posted only when all its services are completed AND all auto-postable services have been posted | IsPosted set after service completion + auto-post | ServiceTimersManager influence | [?] |
+| BR-007 | Route listing can be filtered by employee, date, route name, and/or crew | Filter parameters: employeeId, schedDate, route, crewId | RouteProxy.cs:27-46 | [?] |
+| BR-008 | Each job in the enriched listing includes current weather data for the technician's location | Weather fetched and attached to EnrichedJobStopDto | ToolDispatcherService.cs:543-548 | [?] |
+| BR-009 | Each job includes customer history insights (how long they've been a customer, last service date) | CustomerSince and LastTreatmentDate enrichment | ToolDispatcherService.cs:557-582 | [?] |
+| BR-010 | Each job maintains a list of service IDs that link to individual service records | ServiceIDs list property on StopObjWithDetails | StopObjWithDetails.cs:53-55 | [?] |
+| BR-011 | Job indicators are a defined set of flags (ASAP, PromisedTime, CallAhead, NewSale, Posted, ServiceCall, Confirmed, CreditHold) | JobIndicatorType enum | StopObjWithDetails.cs:160-171 | [?] |
+| BR-012 | Jobs for customers on credit hold must be flagged so technician is aware of billing issues | OnCreditHold flag on job | StopObjWithDetails.cs:69 | [?] |
 
 ## Job Indicators
+
+> **Source repo:** `Real-Green-Mobile`
 
 | Indicator | Field | UI Implication |
 |-----------|-------|----------------|
@@ -40,6 +46,8 @@
 
 ### Get Jobs for Date
 
+> **Source repos:** `Real-Green-Mobile` → `RealGreenMobileAPI`
+
 | Step | Action | Entities Involved |
 |------|--------|-------------------|
 | 1 | Request route listing | RouteProxy |
@@ -51,6 +59,8 @@
 
 ### Get Job Details (Program Records)
 
+> **Source repos:** `Real-Green-Mobile` → `RealGreenMobileAPI`
+
 | Step | Action | Entities Involved |
 |------|--------|-------------------|
 | 1 | Request program records for customer | RouteProxy |
@@ -59,6 +69,8 @@
 | 4 | Process for AI response | ToolDispatcherService |
 
 ## Entity Relationships
+
+> **Source repo:** `Real-Green-Mobile`
 
 ```mermaid
 erDiagram
@@ -70,6 +82,8 @@ erDiagram
 ```
 
 ## Data Structure: StopObjWithDetails
+
+> **Source repo:** `Real-Green-Mobile`
 
 Key fields for AI consumption:
 
@@ -88,6 +102,8 @@ Key fields for AI consumption:
 | Latitude/Longitude | double | GPS coordinates |
 
 ## API Touchpoints
+
+> **Source repo:** `RealGreenMobileAPI`
 
 | Operation | Endpoint | Method | Notes |
 |-----------|----------|--------|-------|
@@ -108,7 +124,9 @@ Key fields for AI consumption:
 
 ## Planned AI Integration
 
-> **Reference:** `rg-ai-mobile-api/rg_mobile_ai_api/tools/tools.py`
+> **Source repo:** `rg-ai-mobile-api` (status: planned)
+
+> **Reference:** `rg_mobile_ai_api/tools/tools.py`
 > **Tool:** `get_summary_tool`
 > **Parameters:** `date: str, summary_type: Literal["JobList", "ServiceAggregation", "ProductAggregation"]`
 > **Status:** Planned - pending architecture decision
@@ -140,9 +158,9 @@ _Section for validation feedback_
 
 _Space for rules Brianna identifies that were missed_
 
-| Rule ID | Rule | Source | Notes |
-|---------|------|--------|-------|
-| | | | |
+| Rule ID | Business Rule | Code Implementation | Source | Notes |
+|---------|---------------|---------------------|--------|-------|
+| | | | | |
 
 ### Edge Cases to Document
 

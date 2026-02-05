@@ -5,6 +5,8 @@
 - **Purpose:** Track time spent on service jobs for billing, payroll, and productivity metrics
 - **Key concepts:** Service timer, ProdEntr (production entry), crew size, man-hours, auto-post
 
+> **See also:** [Glossary](../glossary.md) for cross-domain terminology (Service, ProdEntr, ServiceState, Posted, etc.)
+
 ## Business Rules
 
 | Rule ID | Rule | Source | Validated |

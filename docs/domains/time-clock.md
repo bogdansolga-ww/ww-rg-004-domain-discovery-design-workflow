@@ -5,6 +5,8 @@
 - **Purpose:** Track employee work hours for payroll, overtime calculation, and compliance
 - **Key concepts:** TmHeader (daily container), TmDetail (individual punch), clock in/out, break lockout, overtime
 
+> **See also:** [Glossary](../glossary.md) for cross-domain terminology (Employee, TmHeader/TmDetail, Break Lockout, etc.)
+
 ## Business Rules
 
 | Rule ID | Rule | Source | Validated |
