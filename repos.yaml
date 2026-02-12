@@ -1,0 +1,35 @@
+# Repository Configuration for Domain Discovery Workflow
+# Updated: 2026-02-05
+
+mobile:
+  name: Real-Green-Mobile
+  path: ../Real-Green-Mobile
+  branch: MOB-12830-AI-assistant-NEW
+  role: C# mobile app - primary BL discovery target
+  status: available
+
+mobile_api:
+  name: RealGreenMobileAPI
+  path: ../RealGreenMobileAPI
+  branch: master
+  role: API that mobile app calls for data persistence
+  status: available
+
+web_api:
+  name: RealGreenSystemsAPI
+  path: ../realgreensystemsapi
+  url: https://bitbucket.org/realgreensystems/realgreensystemsapi/
+  branch: master
+  role: Web API - potential duplicate BL (to be investigated)
+  status: unavailable  # TODO: Update when access granted
+
+ai_api:
+  name: rg-ai-mobile-api
+  path: ../rg-ai-mobile-api
+  branch: main
+  role: AI assistant API (Jerry) - tool definitions & agent prompts
+  status: planned  # Reference only in domain maps; full integration TBD
+  key_files:
+    - rg_mobile_ai_api/tools/tools.py  # Tool definitions
+    - rg_mobile_ai_api/tools/voice_tools.py  # Voice tool variants
+  notes: Include as "Planned AI Integration" section in domain maps
