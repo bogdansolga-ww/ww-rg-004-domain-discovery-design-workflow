@@ -30,6 +30,7 @@ Developers spend 1-2 days discovering domain logic when adding AI agent capabili
 
 | Command | Purpose |
 |---------|---------|
+| `/onboarding` | Interactive walkthrough of the entire workflow |
 | `/discover-domain [entity]` | Generate domain map from codebase |
 | `/validate-domain [entity]` | Interactive expert validation |
 | `/check-domain-staleness` | Find outdated domain maps |
